@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="写一封给你的信 — Soul Haven 私人来信体验（MVP 演示）。先说说你的心里话，Soul Haven 认真听完，为你写一封只属于你的信。">
+  <meta name="robots" content="noindex, nofollow">
+  <title>写一封给你的信 — Soul Haven</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;600;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/personal-letter.css">
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+  <meta name="theme-color" content="#F7F4EF">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="navbar-logo">墨白小栈</a>
+      <button class="mobile-menu-btn" aria-label="菜单">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="navbar-links">
+        <li><a href="/">首页</a></li>
+        <li><a href="articles/">文章</a></li>
+        <li><a href="about.html">关于</a></li>
+        <li><a href="personal-letter.html" class="active" title="写一封给你的信">写信</a></li>
+        <li><a href="support.html">支持</a></li>
+        <li><button class="theme-toggle" aria-label="切换暗色模式">🌙</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="letterApp" class="pl-app">
+    <div class="container">
+      <div class="pl-shell">
+
+        <div class="pl-center">
+          <p class="pl-eyebrow">SOUL HAVEN · 私人来信</p>
+          <span class="pl-trial-badge">免费试信 · 本地演示</span>
+        </div>
+
+        <!-- 01 进入 -->
+        <section class="pl-stage" data-stage="entry" id="pl-entry">
+          <h1 class="pl-title">写一封给你的信</h1>
+          <p class="pl-lead">不需要想清楚怎么说。把心里的话写下来，Soul Haven 会认真听完，再为你写一封只属于你的信。</p>
+          <div class="pl-center">
+            <button type="button" id="pl-start" class="pl-btn pl-btn-primary">开始写信</button>
+          </div>
+          <p class="pl-note">这是一次免费试信（MVP 演示）。完整私人信即将开放，本次不会产生任何支付。</p>
+        </section>
+
+        <!-- 02 表达 -->
+        <section class="pl-stage" data-stage="express" id="pl-express" hidden>
+          <h2 class="pl-question">今晚，你为什么来到这里？</h2>
+          <p class="pl-sub">不需要想清楚。告诉我最近发生的一件事，或者只是说说此刻脑子里反复出现的那个念头。</p>
+          <textarea class="pl-textarea" id="pl-expression-input" placeholder="比如：最近工作很不顺，我越来越觉得自己是不是走错路了……" aria-label="写下你的心里话"></textarea>
+          <p class="pl-hint" id="pl-express-hint" hidden></p>
+          <p class="pl-privacy">你写下的内容仅用于生成这次来信体验（本地演示，不发送到任何服务器，也不会被保存或公开）。</p>
+          <div class="pl-express-actions">
+            <button type="button" id="pl-express-next" class="pl-btn pl-btn-primary">写到这里就好</button>
+          </div>
+          <p class="pl-kbd">提示：写完可按 Ctrl + Enter</p>
+        </section>
+
+        <!-- 03 对话（本地模拟追问） -->
+        <section class="pl-stage" data-stage="chat" id="pl-chat" hidden>
+          <p class="pl-chat-header">和 Soul Haven 说说话</p>
+          <div class="pl-transcript" id="pl-transcript" aria-live="polite"></div>
+          <div class="pl-chat-area" id="pl-chat-area"></div>
+          <p class="pl-chat-caption">追问由本地演示生成（不是真实 AI）。可以随时停止。</p>
+        </section>
+
+        <!-- 04 理解过渡 -->
+        <section class="pl-stage" data-stage="reading" id="pl-reading" hidden>
+          <div class="pl-reading">
+            <div class="pl-reading-lines" id="pl-reading-lines"></div>
+            <button type="button" class="pl-skip-link pl-skip-wait" id="pl-skip-wait">直接去看信</button>
+          </div>
+        </section>
+
+        <!-- 05 信封 -->
+        <section class="pl-stage" data-stage="envelope" id="pl-envelope-stage" hidden>
+          <p class="pl-env-caption">一封写给你的信 · 免费试信</p>
+          <div id="pl-envelope" class="pl-envelope" role="button" tabindex="0" aria-label="打开这封信" data-pl-theme="grey">
+            <div class="pl-env-back"></div>
+            <div class="pl-env-inner"></div>
+            <div class="pl-env-letter" aria-hidden="true">
+              <i></i><i></i><i></i><i></i>
+            </div>
+            <div class="pl-env-flap"></div>
+            <div class="pl-env-front">
+              <div class="pl-env-label">
+                <div class="pl-env-to">To：今晚的你</div>
+                <div class="pl-env-date" id="pl-env-date"></div>
+              </div>
+            </div>
+            <div class="pl-env-seal"><span id="pl-env-monogram">墨</span></div>
+          </div>
+          <p class="pl-env-open-tip">轻触信封，慢慢打开</p>
+        </section>
+
+        <!-- 06 信 -->
+        <section class="pl-stage" data-stage="letter" id="pl-letter" hidden>
+          <div class="pl-letter-sheet">
+            <p class="pl-letter-meta" id="pl-env-date-final"></p>
+            <p class="pl-letter-first" id="pl-letter-first"></p>
+            <div class="pl-letter-body" id="pl-letter-body"></div>
+          </div>
+          <div class="pl-after">
+            <h3>如果你愿意，我可以再认真听你说一点。</h3>
+            <p>未来这里会开放「完整私人信」：更深的追问、更贴近你的理解、更完整的一封信与专属信封。今天这一封试信，是想先让你知道——被认真听完，是什么感觉。</p>
+            <div class="pl-after-actions">
+              <button type="button" id="pl-cta-full" class="pl-btn pl-btn-primary">完整私人信 · 即将开放</button>
+              <button type="button" class="pl-btn pl-btn-ghost pl-restart">再写一封（试信）</button>
+            </div>
+            <p class="pl-pay-tip" id="pl-pay-tip" hidden></p>
+            <p class="pl-note">演示不会产生支付。想支持墨白（与私人信无关的自愿赞赏）可以到<a href="support.html">支持页</a>。</p>
+          </div>
+        </section>
+
+        <!-- 危机提示（温和、非医疗） -->
+        <section class="pl-stage" data-stage="crisis" id="pl-crisis" hidden>
+          <div class="pl-crisis">
+            <h2>先停一下</h2>
+            <p>你写下的内容听起来很沉重。<br>Soul Haven 是文字陪伴，不是专业帮助，也没有能力替你处理很危险的情况。</p>
+            <p>如果你此刻真的很不好过，请一定联系身边信任的人，或当地的心理援助渠道。你不需要一个人扛。</p>
+            <div class="pl-after-actions">
+              <a class="pl-btn pl-btn-soft" href="/">回到首页</a>
+              <button type="button" class="pl-btn pl-btn-ghost pl-restart">再写一次（试信）</button>
+            </div>
+          </div>
+        </section>
+
+        <noscript><p class="pl-note">私人来信体验需要启用 JavaScript。</p></noscript>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <p class="footer-bio">
+        墨白小栈 — 不是居高临下的开导，是「我也经历过」的陪伴。愿你在这里找到片刻安宁，也找到继续前行的力气。
+      </p>
+      <ul class="footer-nav">
+        <li><a href="/">首页</a></li>
+        <li><a href="articles/">文章</a></li>
+        <li><a href="about.html">关于</a></li>
+        <li><a href="personal-letter.html">写信</a></li>
+        <li><a href="support.html">支持</a></li>
+      </ul>
+      <p class="footer-copyright">© 2026 墨白小栈 · 你不必总是坚强，在这里可以放下</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/personal-letter-data.js"></script>
+  <script src="assets/js/personal-letter.js"></script>
+</body>
+</html>

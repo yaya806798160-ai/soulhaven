@@ -1,0 +1,6 @@
+# 内部文档与维护资料：不进入公开站点仓库
+docs/
+maintenance/
+*.log
+*.err
+.DS_Store

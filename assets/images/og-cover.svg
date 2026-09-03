@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FDF9F3"/>
+      <stop offset="0.5" stop-color="#F5EDE4"/>
+      <stop offset="1" stop-color="#EDE6DB"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.85" cy="0.15" r="0.6">
+      <stop offset="0" stop-color="#C9876A" stop-opacity="0.25"/>
+      <stop offset="1" stop-color="#C9876A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g transform="translate(120 120)">
+    <circle cx="0" cy="0" r="64" fill="#C9876A"/>
+    <path d="M58-38a78 78 0 1 0 54 118A64 64 0 0 1 58-38z" fill="#FDF9F3"/>
+  </g>
+  <text x="120" y="330" font-family="Noto Serif SC, serif" font-size="72" fill="#3D3832" font-weight="700">你不必总是坚强</text>
+  <text x="120" y="425" font-family="Noto Serif SC, serif" font-size="72" fill="#3D3832" font-weight="700">在这里可以放下</text>
+  <text x="120" y="500" font-family="Noto Sans SC, sans-serif" font-size="30" fill="#7A7369">墨白小栈 · 我懂你，因为你经历的我也经历过</text>
+  <text x="120" y="552" font-family="Noto Sans SC, sans-serif" font-size="24" fill="#B5ADA3">Soul Haven · 治愈系文字陪伴</text>
+</svg>
