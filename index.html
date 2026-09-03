@@ -9,8 +9,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;600;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/reader-sense.css">
   <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
   <meta name="theme-color" content="#F7F4EF">
+  <meta name="app-version" content="1.1.0">
   <link rel="canonical" href="https://ab54b4328fe8f1786.sh5.agentos-app.net/">
   <meta property="og:site_name" content="墨白小栈">
   <meta property="og:title" content="墨白小栈 — 我懂你，因为你经历的我也经历过">
@@ -334,6 +336,24 @@
   </section>
 
   <!-- 订阅引导 — 共情文案 -->
+    <!-- Reader Sense：今晚推荐（v1.1.0） -->
+  <section class="reader-sense" id="reader-sense" data-version="1.1.0">
+    <div class="container">
+      <div class="rs-head">
+        <h2 class="rs-title" id="rs-title">今晚，先陪你随便读几篇</h2>
+        <p class="rs-subtitle" id="rs-subtitle"></p>
+      </div>
+      <div class="rs-list" id="rs-recs"></div>
+      <div class="rs-correction">
+        <button type="button" class="rs-btn" id="rs-want-btn">我现在更想看…</button>
+        <button type="button" class="rs-btn" id="rs-clear">清除我的阅读记忆</button>
+      </div>
+      <div class="rs-want-chips" id="rs-want-chips" hidden></div>
+      <p class="rs-feedback" id="rs-feedback" role="status" hidden></p>
+      <a class="rs-pl-entry" href="personal-letter.html">如果这些都不是你此刻想要的，也许可以写下来——写给今晚的你 →</a>
+      <p class="rs-note">这些只存在你的浏览器里，用来为你找一两篇合适的文字，可以随时清除。</p>
+    </div>
+  </section>
   <section class="subscribe-section">
     <div class="container">
       <div class="subscribe-card fade-in">
@@ -375,5 +395,7 @@
   </footer>
 
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/reader-sense-data.js"></script>
+  <script src="assets/js/reader-sense.js"></script>
 </body>
 </html>

@@ -1,0 +1,141 @@
+/* ============================================
+   Soul Haven · Reader Sense — 独立样式作用域
+   只作用于 .reader-sense / .rs-*，不污染全局。
+   ============================================ */
+.reader-sense {
+  padding: 8px 0 4px;
+}
+.reader-sense .rs-head {
+  margin-bottom: 20px;
+}
+.reader-sense .rs-title {
+  font-family: var(--font-serif, serif);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+  margin: 0 0 6px;
+}
+.reader-sense .rs-subtitle {
+  color: var(--color-text-secondary, #7A7369);
+  font-size: .92rem;
+  margin: 0;
+}
+.rs-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.rs-card {
+  border: 1px solid var(--color-border-light, #EAE5DD);
+  border-radius: 14px;
+  background: var(--color-bg-glass, rgba(255,255,255,.55));
+  padding: 15px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.rs-cat {
+  font-size: .76rem;
+  letter-spacing: .04em;
+  color: var(--color-accent, #C9876A);
+}
+.rs-card-link {
+  font-family: var(--font-serif, serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-text, #3D3832);
+  text-decoration: none;
+  line-height: 1.5;
+}
+.rs-card-link:hover { color: var(--color-accent, #C9876A); }
+.rs-reason {
+  margin: 0;
+  font-size: .9rem;
+  line-height: 1.7;
+  color: var(--color-text-secondary, #7A7369);
+}
+.rs-explain {
+  margin: 0;
+  font-size: .76rem;
+  line-height: 1.5;
+  color: var(--color-text-muted, #B5ADA3);
+}
+.rs-actions {
+  margin-top: auto;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 4px;
+}
+.rs-btn {
+  font-family: inherit;
+  font-size: .78rem;
+  color: var(--color-text-muted, #B5ADA3);
+  background: transparent;
+  border: 1px solid var(--color-border, #E0D8CE);
+  border-radius: 999px;
+  padding: 4px 12px;
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+.rs-btn:hover { border-color: var(--color-accent, #C9876A); color: var(--color-accent-hover, #B87352); }
+.rs-correction {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.rs-correction .rs-btn { border-style: dashed; }
+.rs-want-chips {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.rs-chip {
+  font-family: inherit;
+  font-size: .82rem;
+  color: var(--color-text, #3D3832);
+  background: var(--color-accent-soft, #FAF0EA);
+  border: 1px solid var(--color-border-light, #EAE5DD);
+  border-radius: 999px;
+  padding: 5px 13px;
+  cursor: pointer;
+}
+.rs-chip:hover { border-color: var(--color-accent, #C9876A); }
+.rs-feedback {
+  margin: 12px 0 0;
+  font-size: .88rem;
+  color: var(--color-accent-hover, #B87352);
+}
+.rs-pl-entry {
+  display: block;
+  margin-top: 22px;
+  text-align: center;
+  font-size: .96rem;
+  color: var(--color-accent, #C9876A);
+  text-decoration: none;
+}
+.rs-pl-entry:hover { text-decoration: underline; }
+.rs-note {
+  margin: 14px auto 0;
+  max-width: 560px;
+  text-align: center;
+  font-size: .78rem;
+  line-height: 1.7;
+  color: var(--color-text-muted, #B5ADA3);
+}
+.rs-note .rs-clear {
+  background: none;
+  border: none;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+
+@media (max-width: 760px) {
+  .rs-list { grid-template-columns: 1fr; }
+}
