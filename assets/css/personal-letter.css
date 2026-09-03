@@ -441,3 +441,9 @@
   .pl-shell { padding: 40px 16px 56px; }
   .pl-soul-text, .pl-user { max-width: 90%; }
 }
+
+/* ---------- 把信寄到邮箱 ---------- */
+.pl-mail { text-align: center; max-width: 560px; margin: 26px auto 0; }
+.pl-mail-title { font-family: var(--font-serif, serif); font-size: 1.08rem; font-weight: 600; margin: 0 0 12px; }
+.pl-mail-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.pl-mail-row .pl-composer-input { flex: 1 1 220px; max-width: 320px; }

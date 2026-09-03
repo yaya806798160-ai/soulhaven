@@ -380,6 +380,28 @@
     return { ok: true, letterId: state.letterId };
   }
 
+  /* ---------- 把信寄到指定邮箱（客户端 mailto，无需后端/第三方） ---------- */
+  function buildMailto(email) {
+    email = (email || '').trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { return ''; }
+    var subject = '写给你的一封信 · Soul Haven';
+    var body = (state.letter ? state.letter.firstLine : '') + '\n\n' +
+      ((state.letter && state.letter.paragraphs) ? state.letter.paragraphs.filter(Boolean).join('\n\n') : '') +
+      '\n\n—— Soul Haven（墨白）';
+    return 'mailto:' + encodeURIComponent(email) + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  }
+  function emailLetter() {
+    var input = document.getElementById('pl-mail-input');
+    var tip = document.getElementById('pl-mail-tip');
+    var to = input ? input.value.trim() : '';
+    var href = buildMailto(to);
+    if (!href) {
+      if (tip) { tip.textContent = '请先填写一个有效的邮箱地址。'; tip.hidden = false; }
+      return '';
+    }
+    window.location.href = href;
+    return href;
+  }
   /* ---------- 危机提示 ---------- */
   function showCrisis() {
     go('crisis');
@@ -417,6 +439,7 @@
     $('pl-envelope').addEventListener('click', openEnvelope);
     $('pl-envelope').addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openEnvelope(); } });
     $('pl-cta-full').addEventListener('click', function () { requestPurchase(); });
+    $('pl-mail-send').addEventListener('click', function () { emailLetter(); });
     $$('.pl-restart').forEach(function (b) { b.addEventListener('click', resetAll); });
     var input = $('pl-expression-input');
     input.addEventListener('keydown', function (e) {
@@ -455,6 +478,8 @@
     isMock: true,
     safetyCheck: safetyCheck,
     getState: function () { return state; },
+    buildMailto: buildMailto,
+    emailLetter: emailLetter,
     purchase: {
       request: requestPurchase,
       onSuccess: markPurchaseSuccess

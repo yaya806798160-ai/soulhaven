@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var VERSION = '1.2.0';
+  var VERSION = '1.2.1';
   var TTL_MS = 24 * 60 * 60 * 1000; // 24h
 
   /* 情绪入口 → 当下需求 + 主题（显式信号） */
