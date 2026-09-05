@@ -6,7 +6,7 @@
 (function () {
   'use strict';
   var KEY = 'soulhaven_lang';
-  var VERSION = '1.2.1';
+  var VERSION = '1.1.0';
 
   function readPref() {
     try { return localStorage.getItem(KEY); } catch (e) { return null; }

@@ -28,7 +28,8 @@ slow-living（焦虑应对）· reading-notes（深夜电台）· creative-tools
 - 新文章先定 slug/标题/分类/日期/封面，再按 content-guide.md 的「墨白的声音」写正文（700–1100 字）。
 - 上一篇/下一篇按日期循环串联，新增文章时更新全部相关 nav。
 - 每页保持：canonical + og 标签 + JSON-LD + favicon；og:image 用绝对 URL。
-- 发布域名目前为预览域名 ab54b4328fe8f1786.sh5.agentos-app.net，正式域名确定后需全局替换（canonical/og/sitemap/robots）。
+- 发布域名目前为预览域名 yaya806798160-ai.github.io/soulhaven，正式域名确定后需全局替换（canonical/og/sitemap/robots）。
 - 订阅表单当前为本地记录（localStorage），后端接入点已留（#subscribe-form / initSubscribeForm）。
 - 社交入口：YouTube https://www.youtube.com/@sandy-yaya（Soul Haven 频道）；邮箱 yaya806798160@163.com（真实邮箱，2026-09-01 已替换全站占位）。
 - 灯塔统计脚本保持 async 加载，勿阻塞渲染。
+

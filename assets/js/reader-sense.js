@@ -89,12 +89,80 @@
     return b;
   }
 
+  // Language detection helper
+  function getLang() {
+    if (typeof SoulHavenLang !== 'undefined' && typeof SoulHavenLang.detect === 'function') {
+      return SoulHavenLang.detect();
+    }
+    return 'zh'; // fallback
+  }
+
+  // UI strings for different languages
+  var UI_STRINGS = {
+    zh: {
+      titleWithSignals: '今晚，也许适合你的是…',
+      titleWithoutSignals: '今晚，先陪你随便读几篇',
+      subWithSignals: '根据你刚刚的表达与停留，挑了几篇。',
+      subWithoutSignals: '还没有太多关于你今晚的信号，先放几篇常被读的。',
+      feedbackNotNow: '好，这篇先不推了。',
+      feedbackAvoidTopic: '好，这个方向先不推了。',
+      feedbackWantMore: function(need) { return '好，那我们往「' + need + '」这个方向再找几篇。'; },
+      feedbackCleared: '已经清空了。之后会按你此刻的浏览重新开始。',
+      buttonNotNow: '不是我想看的',
+      buttonAvoidTopic: '暂时不想看这个方向'
+    },
+    en: {
+      titleWithSignals: 'Tonight, maybe these are for you…',
+      titleWithoutSignals: 'Tonight, let me keep you company with a few reads.',
+      subWithSignals: 'Based on what you’ve just shared and lingered on, I picked these.',
+      subWithoutSignals: 'Not much signal about tonight yet—here are a few often-read pieces.',
+      feedbackNotNow: 'Okay, let’s skip this one for now.',
+      feedbackAvoidTopic: 'Okay, let’s avoid this direction for now.',
+      feedbackWantMore: function(need) { return 'Okay, let’s look for more in the «' + need + '» direction.'; },
+      feedbackCleared: 'All cleared. We’ll restart based on your current browsing.',
+      buttonNotNow: 'Not what I’m looking for',
+      buttonAvoidTopic: 'Not this direction for now'
+    }
+  };
+
+  // Need translations for display (internal state stays in Chinese for matching)
+  var NEED_TRANSLATIONS = {
+    zh: {
+      '被允许休息': '被允许休息',
+      '被允许不睡': '被允许不睡',
+      '被陪伴': '被陪伴',
+      '被安慰': '被安慰',
+      '被理解': '被理解',
+      '被接住': '被接住',
+      '被允许独处': '被允许独处',
+      '被允许不完美': '被允许不完美',
+      '被允许慢': '被允许慢',
+      '被点醒': '被点醒',
+      '安静的共鸣': '安静的共鸣'
+    },
+    en: {
+      '被允许休息': 'Allowed to rest',
+      '被允许不睡': 'Allowed to not sleep',
+      '被陪伴': 'To be accompanied',
+      '被安慰': 'To be comforted',
+      '被理解': 'To be understood',
+      '被接住': 'To be held',
+      '被允许独处': 'Allowed to be alone',
+      '被允许不完美': 'Allowed to be imperfect',
+      '被允许慢': 'Allowed to be slow',
+      '被点醒': 'To be awakened',
+      '安静的共鸣': 'Quiet resonance'
+    }
+  };
+
   function render() {
+    var lang = getLang();
+    var strings = UI_STRINGS[lang];
     var rec = CORE.compute(CORE.ARTICLES, state, 3);
     var title = $('rs-title');
     var sub = $('rs-subtitle');
-    if (title) { title.textContent = rec.hasSignals ? '今晚，也许适合你的是…' : '今晚，先陪你随便读几篇'; }
-    if (sub) { sub.textContent = rec.hasSignals ? '根据你刚刚的表达与停留，挑了几篇。' : '还没有太多关于你今晚的信号，先放几篇常被读的。'; }
+    if (title) { title.textContent = rec.hasSignals ? strings.titleWithSignals : strings.titleWithoutSignals; }
+    if (sub) { sub.textContent = rec.hasSignals ? strings.subWithSignals : strings.subWithoutSignals; }
 
     var box = $('rs-recs');
     if (!box) { return; }
@@ -124,14 +192,15 @@
 
       var actions = document.createElement('div');
       actions.className = 'rs-actions';
-      actions.appendChild(makeButton('不是我想看的', function () {
+      // Use translated button texts
+      actions.appendChild(makeButton(strings.buttonNotNow, function () {
         if (state.explicit.notNow.indexOf(art.id) === -1) { state.explicit.notNow.push(art.id); }
-        save(); feedback('好，这篇先不推了。'); render();
+        save(); feedback(strings.feedbackNotNow); render();
       }));
-      actions.appendChild(makeButton('暂时不想看这个方向', function () {
+      actions.appendChild(makeButton(strings.buttonAvoidTopic, function () {
         var c = art.categories[0];
         if (state.explicit.avoidTopics.indexOf(c) === -1) { state.explicit.avoidTopics.push(c); }
-        save(); feedback('好，这个方向先不推了。'); render();
+        save(); feedback(strings.feedbackAvoidTopic); render();
       }));
 
       card.appendChild(cat);
@@ -142,21 +211,29 @@
       box.appendChild(card);
     });
 
-    renderWantChips();
+    renderWantChips(lang, strings);
   }
 
-  function renderWantChips() {
+  function renderWantChips(lang, strings) {
     var wrap = $('rs-want-chips');
     if (!wrap) { return; }
     wrap.innerHTML = '';
+    // We need to display the translated need but store the Chinese need
     WANT_OPTIONS.forEach(function (need) {
       var b = document.createElement('button');
       b.type = 'button';
       b.className = 'rs-chip';
-      b.textContent = need;
+      // Display the translated need
+      var trans = NEED_TRANSLATIONS[lang] && NEED_TRANSLATIONS[lang][need] ? NEED_TRANSLATIONS[lang][need] : need;
+      b.textContent = trans;
       b.addEventListener('click', function () {
         if (state.explicit.wantMore.indexOf(need) === -1) { state.explicit.wantMore.push(need); }
-        save(); feedback('好，那我们往「' + need + '」这个方向再找几篇。'); wrap.hidden = true; render();
+        save(); 
+        // Use the feedbackWantMore function which expects the original need (Chinese) for the message
+        var feedbackMsg = strings.feedbackWantMore ? strings.feedbackWantMore(need) : ('好，那我们往「' + need + '」这个方向再找几篇。');
+        feedback(feedbackMsg); 
+        wrap.hidden = true; 
+        render();
       });
       wrap.appendChild(b);
     });
@@ -219,7 +296,7 @@
     var clearBtn = $('rs-clear');
     if (clearBtn) {
       clearBtn.addEventListener('click', function () {
-        clearAll(); feedback('已经清空了。之后会按你此刻的浏览重新开始。'); render();
+        clearAll(); feedback(UI_STRINGS[getLang()].feedbackCleared); render();
       });
     }
   }

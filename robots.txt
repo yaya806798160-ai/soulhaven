@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ab54b4328fe8f1786.sh5.agentos-app.net/sitemap.xml
+Sitemap: https://yaya806798160-ai.github.io/soulhaven/sitemap.xml
+

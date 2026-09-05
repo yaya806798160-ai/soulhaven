@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var VERSION = '1.2.1';
+  var VERSION = '1.1.0';
   var TTL_MS = 24 * 60 * 60 * 1000; // 24h
 
   /* 情绪入口 → 当下需求 + 主题（显式信号） */
@@ -54,10 +54,28 @@
     '被点醒': '今晚你可能不是需要安慰，是需要有人把话说透一点。',
     '安静的共鸣': '这一篇不喧哗，只是安静地懂你。'
   };
+  var REASON_BY_NEED_EN = {
+    '被允许休息': 'If you don’t feel like solving anything tonight, maybe start with this one.',
+    '被允许不睡': 'This piece won’t rush you to sleep—it just wants to keep you company tonight.',
+    '被陪伴': 'This piece isn’t here to give you answers, just to sit with you for a while.',
+    '被安慰': 'If tonight feels tough, this piece might gently hold you.',
+    '被理解': 'This piece might be saying exactly what you haven’t spoken out loud.',
+    '被接住': 'This piece wants to gently hold you as you are right now.',
+    '被允许独处': 'Being alone is okay—this piece will keep you company quietly for a bit.',
+    '被允许不完美': 'Tonight you can be imperfect; this piece hopes you can breathe a little easier.',
+    '被允许慢': 'No rush—this piece will keep you company as you take it slow.',
+    '被点醒': 'Tonight you might not need comfort; you might need someone to speak plainly.',
+    '安静的共鸣': 'This piece doesn’t speak loudly—it just quietly understands you.'
+  };
   var REASON_BY_INTENT = {
     companion: '这篇不急着给你答案，只是想陪你坐一会儿。',
     insight: '这一篇，或许能给你一个不一样的角度。',
     action: '这一篇，想给你一点今晚就能用上的力气。'
+  };
+  var REASON_BY_INTENT_EN = {
+    companion: 'This piece isn’t rushing to give you answers—it just wants to sit with you for a while.',
+    insight: 'This piece might offer you a different perspective.',
+    action: 'This piece wants to give you a little strength you can use tonight.'
   };
 
   function makeId() {
@@ -139,13 +157,20 @@
 
   function reasonFor(result, state) {
     var art = result.article;
+    var lang = 'zh';
+    if (typeof SoulHavenLang !== 'undefined' && typeof SoulHavenLang.detect === 'function') {
+      lang = SoulHavenLang.detect();
+    }
+    var reasonMap = (lang === 'en') ? REASON_BY_NEED_EN : REASON_BY_NEED;
     if (result.matchedNeeds && result.matchedNeeds.length) {
       var need = result.matchedNeeds[0];
-      if (REASON_BY_NEED[need]) { return REASON_BY_NEED[need]; }
+      if (reasonMap[need]) { return reasonMap[need]; }
     }
     var intent = topIntent(state);
-    if (intent && REASON_BY_INTENT[intent]) { return REASON_BY_INTENT[intent]; }
-    return REASON_BY_INTENT[art.intent] || REASON_BY_INTENT.companion;
+    if (intent && ((lang === 'en') ? REASON_BY_INTENT_EN : REASON_BY_INTENT)[intent]) {
+      return (lang === 'en') ? REASON_BY_INTENT_EN[intent] : REASON_BY_INTENT[intent];
+    }
+    return (lang === 'en') ? REASON_BY_INTENT_EN.companion : REASON_BY_INTENT.companion;
   }
 
   function explainFor(result, state) {
@@ -186,7 +211,9 @@
     TOPIC_MAP: TOPIC_MAP,
     ARTICLES: ARTICLES,
     REASON_BY_NEED: REASON_BY_NEED,
+    REASON_BY_NEED_EN: REASON_BY_NEED_EN,
     REASON_BY_INTENT: REASON_BY_INTENT,
+    REASON_BY_INTENT_EN: REASON_BY_INTENT_EN,
     defaultState: defaultState,
     compute: compute
   };
